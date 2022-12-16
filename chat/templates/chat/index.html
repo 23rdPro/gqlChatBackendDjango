@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header ><h3>Welcome {{request.user}} <em>click</em> below to chat</h3></header>
+    <section>
+        <div>
+            <ol>
+                {% for fnd in friends %}
+                    <li>
+                        <a href="" id="{{fnd}}">
+                            {{fnd}}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous">
+    </script>
+
+    <script type="text/javascript">
+
+        $("a").click(function () {
+            const receiver = $(this).attr('id')
+            const sender = "{{ request.user }}";
+
+            fetch("/create/room/", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({"sender": sender, "receiver": receiver})
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = data.url;
+            })
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i=0; i<cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length+1) === (name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue
+        };
+    </script>
+
+</body>
+</html>
+
