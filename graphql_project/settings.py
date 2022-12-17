@@ -32,6 +32,10 @@ AUTH_USER_MODEL = 'user.User'
 # Application definition
 INSTALLED_APPS = [
     'daphne',
+    'channels',
+    'graphene_django',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'django_filters',
     'chat',
 
     'django.contrib.admin',
@@ -40,11 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'channels',
-    'graphene_django',
-    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    'django_filters',
 
     'notifications',
     'corsheaders',

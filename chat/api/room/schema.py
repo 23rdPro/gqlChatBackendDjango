@@ -2,7 +2,7 @@ import graphene
 from django.contrib.auth import get_user_model
 from ..types import RoomType
 from chat.models import Room
-from .mutation import RoomMutation
+from .mutation import RoomMutation, SignalMessageMutation
 # from .subscriptions import OnNewMessageSubscription
 
 User = get_user_model()
@@ -24,6 +24,7 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     mutate_room = RoomMutation.Field()
+    send_message = SignalMessageMutation.Field()
 
 
 class Subscription(graphene.ObjectType):

@@ -43,6 +43,27 @@ class RoomMutation(graphene.Mutation):
         )
 
 
+class SignalMessageMutation(graphene.Mutation):
+    sent = graphene.Boolean()
+
+    class Arguments:
+        room_id = graphene.String(required=True)
+        message = graphene.String(required=True)
+
+    @staticmethod
+    def mutate(root, info, **kwargs):
+        uid = uuid.UUID(kwargs.get('room_id'))
+        assert Room.objects.filter(id=uid).exists(), \
+            "Room is expected to have gone through mutation"
+        msg = kwargs.get('message')
+        room = Room.objects.get(id=uid)
+
+        with transaction.atomic(durable=True):
+            instance = Message.objects.create(message=msg)
+            room.message.add(instance)
+        return SignalMessageMutation(sent=True)
+
+
 # class SendMessageMutation(graphene.Mutation):
 #     sent = graphene.Boolean()
 #
@@ -58,9 +79,9 @@ class RoomMutation(graphene.Mutation):
 #         msg = kwargs.get('message')
 #         room = Room.objects.get(id=uid)
 #
-#         with transaction.atomic(durable=True):
-#             instance = Message.objects.create(message=msg)
-#             room.message.add(instance)
+        # with transaction.atomic(durable=True):
+        #     instance = Message.objects.create(message=msg)
+        #     room.message.add(instance)
 #
 #         OnNewMessageSubscription.new_chat_message(
 #             room_id=room.id,

@@ -53,4 +53,4 @@ schema = graphene.Schema(
     mutation=Mutation,
     # subscription=Subscription,
 )
-# schema.execute_async()  # todo how to execute schema
+# schema.execute_async()  # todo how to execute_async schema
