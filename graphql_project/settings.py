@@ -4,6 +4,7 @@ import environ
 import os
 from pathlib import Path
 import asgiref
+# from graphql_ws.django.routing import application
 
 env = environ.Env(DEBUG=(bool, False))
 
@@ -31,11 +32,7 @@ AUTH_USER_MODEL = 'user.User'
 # Application definition
 INSTALLED_APPS = [
     'daphne',
-    'channels',
-    'graphene_django',
-    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    # 'graphql_auth',
-    'django_filters',
+    'chat',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,11 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'channels',
+    'graphene_django',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'django_filters',
+
     'notifications',
     'corsheaders',
 
     'user',
-    'chat',
 ]
 
 GRAPHENE = {
@@ -56,7 +57,7 @@ GRAPHENE = {
     'MIDDLEWARE': [
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ],
-    "SUBSCRIPTION_PATH": "/ws/rooms"
+    # "SUBSCRIPTION_PATH": "/ws/rooms"
 }
 
 AUTHENTICATION_BACKENDS = [
@@ -112,6 +113,7 @@ WSGI_APPLICATION = 'graphql_project.wsgi.application'
 
 ASGI_APPLICATION = 'graphql_project.asgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -136,6 +138,7 @@ DATABASES = {
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
+        # "BACKEND": "channels.layers.InMemoryChannelLayer",
         "CONFIG": {
             "hosts": [("localhost", 6379)],
         },

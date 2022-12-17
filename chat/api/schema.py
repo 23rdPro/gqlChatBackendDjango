@@ -12,7 +12,7 @@ from .user.schema import (
 from .room.schema import (
     Query as RoomQuery,
     Mutation as RoomMutation,
-    Subscription as RoomMessageSubscription,
+    # Subscription as RoomMessageSubscription,
 )
 
 
@@ -41,15 +41,16 @@ class Mutation(
     refresh_token = graphql_jwt.Refresh.Field()
 
 
-class Subscription(
-    RoomMessageSubscription,
-    graphene.ObjectType
-):
-    pass
+# class Subscription(
+#     RoomMessageSubscription,
+#     graphene.ObjectType
+# ):
+#     pass
 
 
 schema = graphene.Schema(
     query=Query,
     mutation=Mutation,
-    subscription=Subscription
+    # subscription=Subscription,
 )
+# schema.execute_async()  # todo how to execute schema

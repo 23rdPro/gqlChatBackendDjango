@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from ..types import RoomType
 from chat.models import Room
 from .mutation import RoomMutation
-from .subscriptions import OnNewMessageSubscription
+# from .subscriptions import OnNewMessageSubscription
 
 User = get_user_model()
 
@@ -27,11 +27,12 @@ class Mutation(graphene.ObjectType):
 
 
 class Subscription(graphene.ObjectType):
-    on_new_message = OnNewMessageSubscription.Field()
+    pass
+    # on_new_message = OnNewMessageSubscription.Field()
 
 
 schema = graphene.Schema(
     query=Query,
     mutation=Mutation,
-    subscription=Subscription
+    # subscription=Subscription
 )

@@ -20,6 +20,12 @@ class UserType(DjangoObjectType):
         exclude = ("password", )
         interfaces = (relay.Node, )
 
+    @classmethod
+    def get_queryset(cls, queryset, info):
+        assert info.context.user.is_authenticated, \
+            "User must be authenticated"
+        return queryset
+
 
 class MessageType(DjangoObjectType):
     class Meta:
